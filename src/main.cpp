@@ -48,7 +48,7 @@ int main() {
         cout << "[FILE BINARY READ]" << endl << endl;
         cout << studentData << endl;
 
-        std::vector<Student> studentsList;
+        vector<Student> studentsList;
         studentsList.push_back(student1);
         studentsList.push_back(student2);
         studentsList.push_back(student3);
@@ -64,7 +64,7 @@ int main() {
         for (const auto &student : studentsListData) {
             cout << student << std::endl;
         }
-    } catch (std::exception& ex) {
+    } catch (exception& ex) {
         cerr << ex.what() << '\n' << std::endl;
     }
 

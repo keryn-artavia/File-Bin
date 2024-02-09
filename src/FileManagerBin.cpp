@@ -4,10 +4,16 @@
 
 #include "FileManagerBin.h"
 
+using namespace std;
+
+
 void FileManagerBin::saveStudent(const Student &student, const string &fileName) {
 
+    // Update the file path
+    string filePath = "D:/USUARIO/GitHub/File-Bin/docs/" + fileName;
+
     // Create and open a binary file
-    ofstream myFile(fileName, ios::binary);
+    ofstream myFile(filePath, ios::binary);
 
     // Write to the file
     write(myFile, student);
@@ -21,8 +27,11 @@ Student FileManagerBin::readDataStudent(const string &fileName) {
     // Create file variable
     Student student;
 
+    // Update the file path
+    string filePath = "D:/USUARIO/GitHub/File-Bin/docs/" + fileName;
+
     // Read from the text file
-    ifstream myReadFile(fileName, ios::binary);
+    ifstream myReadFile(filePath, ios::binary);
 
     if (!myReadFile.is_open()) {
         throw invalid_argument("Could not open the file [" + fileName + "]");
@@ -38,78 +47,102 @@ Student FileManagerBin::readDataStudent(const string &fileName) {
     return student;
 }
 
-void FileManagerBin::saveStudentsList(const vector<Student> &studentsList, const string &fileName) {
+void FileManagerBin::saveStudentsList(const vector<Student> &studentsList, const string &filename) {
 
-    // Create and open a binary file
-    ofstream myFile(fileName, ios_base::binary);
+    string filePath = "D:/USUARIO/GitHub/File-Bin/docs/" + filename;
 
-    // Write to the file
-    for (auto &student : studentsList) {
-        write(myFile, student);
+    ofstream file(filePath, ios::binary);
+
+    if (!file) {
+        cerr << "Error opening file for writing." << endl;
+        return;
     }
 
-    // Close the file
-    myFile.close();
+    for (const auto& student : studentsList) {
+        write(file, student);
+    }
 }
 
-vector<Student> FileManagerBin::readDataStudentsList(const string &fileName) {
+vector<Student> FileManagerBin::readDataStudentsList(const string &filename) {
 
-    // Create file variable
+    string filePath = "D:/USUARIO/GitHub/File-Bin/docs/" + filename;
+
     vector<Student> studentsList;
+
+    ifstream file(filePath, ios::binary);
+    if (!file) {
+        cerr << "Error opening file for reading." << endl;
+        return studentsList;
+    }
+
     Student student;
 
-    // Read from the text file
-    ifstream myReadFile(fileName, ios::binary);
-
-    if (!myReadFile.is_open()) {
-        throw invalid_argument("Could not open the file [" + fileName + "]");
+    while (read(file, student)) {
+        studentsList.push_back(student);
     }
-
-    // Read the binary file
-    // myReadFile.seekg (sizeof(physicalProduct),ios::beg);  // Reading the last value
-    myReadFile.seekg (0);
-    while(myReadFile.good()){
-        read(myReadFile, student);
-        if (student.getName() != "") {
-            studentsList.push_back(student);
-        }
-    }
-
-    // Close the file
-    myReadFile.close();
-
     return studentsList;
 }
 
 ostream &FileManagerBin::write(ostream &out, const Student &student) {
-    string name = student.getName();
-    string id = student.getID();
 
+    // Serialize each member of Student individually
+
+    // Name
+    const string& name = student.getName();
     size_t len = name.size();
-    out.write((char*)&len, sizeof(len));
-    out.write(name.c_str(), len);
+    out.write(reinterpret_cast<const char*>(&len), sizeof(len));
+    out.write(name.data(), len);
 
+    // ID
+    const string& id = student.getID();
     len = id.size();
-    out.write((char*)&len, sizeof(len));
-    out.write(id.c_str(), len);
+    out.write(reinterpret_cast<const char*>(&len), sizeof(len));
+    out.write(id.data(), len);
+
+    // Course
+    const string& course = student.getCourse();
+    len = course.size();
+    out.write(reinterpret_cast<const char*>(&len), sizeof(len));
+    out.write(course.data(), len);
+
+    // Grade
+    double grade = student.getGrade();
+    out.write(reinterpret_cast<const char*>(&grade), sizeof(grade));
 
     return out;
 }
 
 istream &FileManagerBin::read(istream &in, Student &student) {
-    string name, id;
+
+    // Deserialize each member of Student individually
+
     size_t len = 0;
+    string temp;
 
-    in.read((char*)&len, sizeof(len));
-    name.resize(len);
-    in.read(&name[0], len);
-    student.setName(name);
+    // Name
+    in.read(reinterpret_cast<char*>(&len), sizeof(len));
+    temp.resize(len);
+    in.read(&temp[0], len);
+    student.setName(temp);
 
+    // ID
     len = 0;
-    in.read((char*)&len, sizeof(len));
-    id.resize(len);
-    in.read(&id[0], len);
-    student.setID(id);
+    in.read(reinterpret_cast<char*>(&len), sizeof(len));
+    temp.resize(len);
+    in.read(&temp[0], len);
+    student.setID(temp);
+
+    // Course
+    len = 0;
+    in.read(reinterpret_cast<char*>(&len), sizeof(len));
+    temp.resize(len);
+    in.read(&temp[0], len);
+    student.setCourse(temp);
+
+    // Grade
+    double grade = 0;
+    in.read(reinterpret_cast<char*>(&grade), sizeof(grade));
+    student.setGrade(grade);
 
     return in;
 }

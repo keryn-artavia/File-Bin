@@ -7,8 +7,6 @@
 
 #include "IPerson.h"
 
-using namespace std;
-
 class Person: public IPerson {
 private:
     string name;

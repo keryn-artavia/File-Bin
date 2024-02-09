@@ -17,11 +17,11 @@ public:
     Student();
     Student(const string &course, double grade);
 
-    string getCourse();
+    string getCourse() const;
     void setCourse(const string &course);
 
-    double getGrade();
-    void setGrade(const double &grade);
+    double getGrade() const;
+    void setGrade(double grade);
 
     friend ostream& operator<<(ostream& os, const Student &student);
 

@@ -10,24 +10,24 @@ Student::Student() {
     weight = 0.0;
 }
 
-string Student::getCourse() {
+string Student::getCourse() const {
     return course;
 }
 
 void Student::setCourse(const string &courseStudent) {
-    course = courseStudent;
+    this->course = courseStudent;
 }
 
-double Student::getGrade() {
+double Student::getGrade() const {
     return grade;
 }
 
-void Student::setGrade(const double &gradeStudent) {
-    grade = gradeStudent;
+void Student::setGrade(double gradeStudent) {
+    this->grade = gradeStudent;
 }
 
 ostream& operator<<(ostream& os, const Student &student) {
-    os << "Name: " << student.getName() << ", ID: " << student.getID() << ", Course: " << student.course << ", Grade: " << student.grade;
+    os << "Name: " << student.getName() << ", ID: " << student.getID() << ", Course: " << student.getCourse() << ", Grade: " << student.getGrade();
     return os;
 }
 
