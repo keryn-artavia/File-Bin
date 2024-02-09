@@ -7,29 +7,25 @@
 
 #include "Person.h"
 
-class Student: public Person{
+class Student : public Person {
 private:
     string course;
-    double weight;   // ponderado
-    double note;
+    double grade;
+    double weight;
 
 public:
     Student();
-    Student(string namePerson, string idPerson);
-    virtual ~Student();
-
+    Student(const string &course, double grade);
 
     string getCourse();
-    double getWeight();
-    double getNoteCourse();
+    void setCourse(const string &course);
 
-    void setCourse(string courseStudent);
-    void setWeight(double weightStudent);
-    void setNoteCourse(double noteStudent);
+    double getGrade();
+    void setGrade(const double &grade);
 
-    virtual string toString();
+    friend ostream& operator<<(ostream& os, const Student &student);
 
+    string toString() const;
 };
-
 
 #endif //MAIN_STUDENT_H
