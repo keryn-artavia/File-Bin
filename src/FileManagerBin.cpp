@@ -4,7 +4,7 @@
 
 #include "FileManagerBin.h"
 
-void FileManagerBin::saveStudent(Student& student, const string& fileName) {
+void FileManagerBin::saveStudent(const Student &student, const string &fileName) {
 
     // Create and open a binary file
     ofstream myFile(fileName, ios::binary);
@@ -16,7 +16,7 @@ void FileManagerBin::saveStudent(Student& student, const string& fileName) {
     myFile.close();
 }
 
-Student FileManagerBin::readDataStudent(const string& fileName) {
+Student FileManagerBin::readDataStudent(const string &fileName) {
 
     // Create file variable
     Student student;
@@ -38,7 +38,7 @@ Student FileManagerBin::readDataStudent(const string& fileName) {
     return student;
 }
 
-void FileManagerBin::saveStudentList(vector<Student>& studentsList, const string& fileName) {
+void FileManagerBin::saveStudentsList(const vector<Student> &studentsList, const string &fileName) {
 
     // Create and open a binary file
     ofstream myFile(fileName, ios_base::binary);
@@ -52,7 +52,7 @@ void FileManagerBin::saveStudentList(vector<Student>& studentsList, const string
     myFile.close();
 }
 
-vector<Student> FileManagerBin::readDataStudentsList(const string& fileName) {
+vector<Student> FileManagerBin::readDataStudentsList(const string &fileName) {
 
     // Create file variable
     vector<Student> studentsList;
@@ -81,22 +81,34 @@ vector<Student> FileManagerBin::readDataStudentsList(const string& fileName) {
     return studentsList;
 }
 
-ostream &FileManagerBin::write(ostream& out, Student &student) {
+ostream &FileManagerBin::write(ostream &out, const Student &student) {
     string name = student.getName();
     string id = student.getID();
 
-    out.write((char*)(&name), sizeof(student.getName()));
-    out.write((char*)(&id), sizeof(student.getID()));
+    size_t len = name.size();
+    out.write((char*)&len, sizeof(len));
+    out.write(name.c_str(), len);
+
+    len = id.size();
+    out.write((char*)&len, sizeof(len));
+    out.write(id.c_str(), len);
 
     return out;
 }
 
-istream &FileManagerBin::read(istream& in, Student& student) {
-    string name = "", id = "";
+istream &FileManagerBin::read(istream &in, Student &student) {
+    string name, id;
+    size_t len = 0;
 
-    in.read((char*)&name, sizeof(double));
-    in.read((char*)&id, sizeof(double));
+    in.read((char*)&len, sizeof(len));
+    name.resize(len);
+    in.read(&name[0], len);
     student.setName(name);
+
+    len = 0;
+    in.read((char*)&len, sizeof(len));
+    id.resize(len);
+    in.read(&id[0], len);
     student.setID(id);
 
     return in;
