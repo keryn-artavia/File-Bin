@@ -4,43 +4,8 @@
 #include <iostream>
 #include <cstdlib>
 
-/*!
- * \mainpage Technical documentation of the example.
- * \section buildingproject Building the Project
- *
- * \subsection step1 Creating a Build Directory
- *
- * It's a good practice to do an out-of-source build. This keeps your build files separate from your source files.
- * \code{.sh}
- * mkdir build
- * cd build
- * \endcode
- * \subsection step2 Running CMake
- * From within the build directory, run CMake to generate the build system.
- *
- * \code{.sh}
- * cmake ..
- * \endcode
- *
- * \subsection step3 Compiling the Project
- * After CMake has done its job, you can use the generated build system to compile the project.
- *
- * \code{.sh}
- * make
- * \endcode
- * This will compile your project and generate an executable in the build directory.
- *
- * \section references References
- *
- * <a href="https://github.com/una-eif201-progra1-master/dev.funda.oop-inheritance">Github repository of the example</a>
- *
- * \date 2021-11-23
- * \author Maikol Guzman Alan
- * \copyright <a href="https://mikeguzman.dev/">mikeguzman.dev</a>
- *
- * \file main.cpp
- * \brief The main.cpp file contains the entry point of the program.
- */
+#include "FileManagerBin.h"
+
 
 int main() {
         // Clear console screen for Windows or Linux
@@ -49,8 +14,61 @@ int main() {
     #else
         system("clear");
     #endif
-    std::cout << "Universidad Nacional de Costa Rica - www.mikeguzman.dev" << std::endl;
+    std::cout << "Archivos binarios" << std::endl;
 
+    try {
+        srand (time(NULL));
+
+        Student student1;
+        student1.setName("Ana");
+        student1.setID("100");
+        student1.setCourse("Course 1");
+        student1.setNoteCourse(0);
+
+        Student student2;
+        student2.setName("Bob");
+        student2.setID("200");
+        student2.setCourse("Course 2");
+        student2.setNoteCourse(0);
+
+        Student student3;
+        student3.setName("Carlos");
+        student3.setID("300");
+        student3.setCourse("Course 2");
+        student3.setNoteCourse(0);
+
+        // Manager SRP
+        FileManagerBin fileManager;
+
+        // This function will saveStudent the information of the
+        // Student in a file with the name studentsCourse1.dat
+        fileManager.saveStudent(student1, "studentsCourse1.dat");
+
+        // This function read a binary file
+        Student studentData = fileManager.readDataStudent("studentsCourse1.dat");
+
+        cout << "[FILE BINARY READ]" << endl;
+        cout << studentData << endl;
+
+        vector<Student> studentsList;
+        studentsList.push_back(student1);
+        studentsList.push_back(student2);
+        studentsList.push_back(student3);
+
+        // This function will saveStudent the information of the
+        // Student in a file with the name studentsCourse.dat
+        fileManager.saveStudentsList(studentsList, "studentsCourse2.dat");
+
+        // This function read a binary file
+        vector<Student> studentsListData = fileManager.readDataStudentList("studentsCourse2.dat");
+
+        cout << "[FILE BINARY READ WITH VECTOR]" << endl;
+        for (auto &student : studentsListData) {
+            cout << student << endl;
+        }
+    } catch (exception& ex) {
+        cerr << ex.what() << '\n' << std::endl;
+    }
 
     std::cout << std::endl;
     return 0;
