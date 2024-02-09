@@ -9,12 +9,21 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
-class IPerson{
+class IPerson {
 public:
-    virtual string toString() = 0;
+    //virtual ~IPerson() {}
+
+    /*
+    virtual std::string getName() const = 0;
+    virtual void setName(const std::string& name) = 0;
+
+    virtual int getID() const = 0;
+    virtual void setID(int id) = 0;
+     */
 };
 
 #endif //MAIN_IPERSON_H

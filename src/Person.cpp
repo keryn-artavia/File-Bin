@@ -4,27 +4,25 @@
 
 #include "Person.h"
 
-Person::Person() {};
+Person::Person() {
+    name = "";
+    id = "";
+}
 
-//Person::Person(string namePerson, string idPerson){}
-Person::Person(const string &namePerson, const string &idPerson) : name(namePerson), id(idPerson) {}
-Person::~Person() {};
-
-//string Person::getName(){ return name; }
-//string Person::getID(){ return id; }
+//Person::~Person() {}
 
 string Person::getName() const {
     return name;
+}
+
+void Person::setName(const string &namePerson) {
+    this->name = namePerson;
 }
 
 string Person::getID() const {
     return id;
 }
 
-void Person::setName(string namePerson) {
-    name = namePerson;
-}
-
-void Person::setID(string idPerson) {
-    id = idPerson;
+void Person::setID(const string &idPerson) {
+    this->id = idPerson;
 }

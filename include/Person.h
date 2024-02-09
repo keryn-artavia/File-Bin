@@ -5,34 +5,24 @@
 #ifndef MAIN_PERSON_H
 #define MAIN_PERSON_H
 
-
 #include "IPerson.h"
 
 using namespace std;
 
 class Person: public IPerson {
-protected:
+private:
     string name;
     string id;
 
-
 public:
     Person();
-    //Person(const string& namePerson, const string& idPerson);
-    Person(const string& namePerson, const string& idPerson);
-    virtual ~Person();
+    //virtual ~Person();
 
-    //string getName();
-    //string getID();
     string getName() const;
+    void setName(const string &name);
+
     string getID() const;
-
-
-    void setName(string namePerson);
-    void setID(string idPerson);
-
-    virtual string toString() = 0;
+    void setID(const string &id);
 };
-
 
 #endif //MAIN_PERSON_H
