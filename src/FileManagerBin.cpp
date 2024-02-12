@@ -9,11 +9,8 @@ using namespace std;
 
 void FileManagerBin::saveStudent(const Student &student, const string &fileName) {
 
-    // Update the file path
-    string filePath = "D:/USUARIO/GitHub/File-Bin/docs/" + fileName;
-
     // Create and open a binary file
-    ofstream myFile(filePath, ios::binary);
+    ofstream myFile(fileName, ios::binary);
 
     // Write to the file
     write(myFile, student);
@@ -27,11 +24,8 @@ Student FileManagerBin::readDataStudent(const string &fileName) {
     // Create file variable
     Student student;
 
-    // Update the file path
-    string filePath = "D:/USUARIO/GitHub/File-Bin/docs/" + fileName;
-
     // Read from the text file
-    ifstream myReadFile(filePath, ios::binary);
+    ifstream myReadFile(fileName, ios::binary);
 
     if (!myReadFile.is_open()) {
         throw invalid_argument("Could not open the file [" + fileName + "]");
@@ -47,11 +41,9 @@ Student FileManagerBin::readDataStudent(const string &fileName) {
     return student;
 }
 
-void FileManagerBin::saveStudentsList(const vector<Student> &studentsList, const string &filename) {
+void FileManagerBin::saveStudentsList(const vector<Student> &studentsList, const string &fileName) {
 
-    string filePath = "D:/USUARIO/GitHub/File-Bin/docs/" + filename;
-
-    ofstream file(filePath, ios::binary);
+    ofstream file(fileName, ios::binary);
 
     if (!file) {
         cerr << "Error opening file for writing." << endl;
@@ -63,13 +55,11 @@ void FileManagerBin::saveStudentsList(const vector<Student> &studentsList, const
     }
 }
 
-vector<Student> FileManagerBin::readDataStudentsList(const string &filename) {
-
-    string filePath = "D:/USUARIO/GitHub/File-Bin/docs/" + filename;
+vector<Student> FileManagerBin::readDataStudentsList(const string &fileName) {
 
     vector<Student> studentsList;
 
-    ifstream file(filePath, ios::binary);
+    ifstream file(fileName, ios::binary);
     if (!file) {
         cerr << "Error opening file for reading." << endl;
         return studentsList;
